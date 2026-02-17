@@ -1,4 +1,4 @@
-use std::{path::{Path, PathBuf}, sync::mpsc::channel, thread};
+use std::{fs::{self}, path::Path, sync::mpsc::channel, thread, time::Duration};
 
 use notify::{Config, RecommendedWatcher, RecursiveMode, Watcher};
 use tauri::{AppHandle, Manager};
@@ -30,7 +30,7 @@ pub fn start(app: AppHandle) {
                 Ok(event) => {
                     for path in event.paths {
                         if is_file_done_downloading(&path) {
-                            println!("File is ready: {:?}", path);
+                            println!("Event detected: {:?}, {:?}", event.kind, path);
                         }
 }
                 }
@@ -43,6 +43,7 @@ pub fn start(app: AppHandle) {
 }
 
 fn is_file_done_downloading(path: &Path) -> bool {
+
     if !path.exists() {
         return false;
     }
@@ -59,6 +60,21 @@ fn is_file_done_downloading(path: &Path) -> bool {
         return false;
     }
 
+    let file_size1 = match fs::metadata(path) {
+        Ok(meta) => meta.len(),
+        Err(_) => return false,
+    };
+
+    thread::sleep(Duration::from_millis(500));
+
+    let file_size2 = match fs::metadata(path) {
+        Ok(meta) => meta.len(),
+        Err(_) => return false,
+    };
+
+    if file_size1 != file_size2 {
+        return false;
+    }
+
     true
 }
-
