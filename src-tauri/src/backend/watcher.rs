@@ -1,4 +1,4 @@
-use std::{sync::mpsc::channel, thread};
+use std::{path::{Path, PathBuf}, sync::mpsc::channel, thread};
 
 use notify::{Config, RecommendedWatcher, RecursiveMode, Watcher};
 use tauri::{AppHandle, Manager};
@@ -28,7 +28,11 @@ pub fn start(app: AppHandle) {
         for res in rx {
             match res {
                 Ok(event) => {
-                    println!("File event: {:?}", event);
+                    for path in event.paths {
+                        if is_file_done_downloading(&path) {
+                            println!("File is ready: {:?}", path);
+                        }
+}
                 }
                 Err(e) => {
                     println!("Watch error: {:?}", e);
@@ -36,5 +40,25 @@ pub fn start(app: AppHandle) {
             }
         }
     });
+}
+
+fn is_file_done_downloading(path: &Path) -> bool {
+    if !path.exists() {
+        return false;
+    }
+        if !path.is_file() {
+        return false;
+    }
+
+    let ext = match path.extension().and_then(|e| e.to_str()) {
+        Some(e) => e,
+        None => return false,
+    };
+
+    if ext == "crdownload" || ext == "part" || ext == "tmp" {
+        return false;
+    }
+
+    true
 }
 
