@@ -39,7 +39,7 @@ fn run_watcher(downloads: &Path) {
                     for path in event.paths {
                         let event_kind = event.kind;
                         if is_file_done_downloading(&path, event_kind) {
-                            println!("Event detected: {:?}, {:?}", event.kind, path);
+                            println!("File download detected: {:?}, {:?}", event.kind, path);
                         }
                     }   
                 }
