@@ -42,7 +42,8 @@ fn run_watcher(downloads: &Path) {
                         let event_kind = event.kind;
                         if is_file_done_downloading(&path, event_kind) {
                             println!("File download detected: {:?}, {:?}", event.kind, path);
-                            let this = file_meta::new(&path);
+                            let data = file_meta::new(&path)?;
+                            println!("{:?}", data);
                         }
                     }   
                 }
