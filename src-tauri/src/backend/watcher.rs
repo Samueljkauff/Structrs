@@ -3,6 +3,8 @@ use std::{fs::{self}, path::{Path, PathBuf}, sync::mpsc::channel, thread, time::
 use notify::{Config, EventKind, RecommendedWatcher, RecursiveMode, Watcher, event::CreateKind};
 use tauri::{AppHandle, Manager};
 
+use crate::backend::file_meta::file_meta;
+
 #[tauri::command]
 pub fn start(app: AppHandle) {
 
@@ -40,6 +42,7 @@ fn run_watcher(downloads: &Path) {
                         let event_kind = event.kind;
                         if is_file_done_downloading(&path, event_kind) {
                             println!("File download detected: {:?}, {:?}", event.kind, path);
+                            let this = file_meta::new(&path);
                         }
                     }   
                 }
@@ -56,6 +59,7 @@ fn is_file_done_downloading(path: &Path, event_kind: EventKind) -> bool {
     if !path.exists() {
         return false;
     }
+    
     if !path.is_file() {
         return false;
     }
