@@ -89,5 +89,16 @@ fn is_file_done_downloading(path: &Path, event_kind: EventKind) -> bool {
         return false;
     }
 
+    if is_hidden(&path) {
+        return false;
+    }
+
     true
+}
+
+fn is_hidden(path: &Path) -> bool {
+    path.file_name()
+        .and_then(|name| name.to_str())
+        .map(|name| name.starts_with('.'))
+        .unwrap_or(false)
 }
