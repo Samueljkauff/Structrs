@@ -51,8 +51,13 @@ fn run_watcher(downloads: &Path) {
 
             println!("File download detected: {:?}, {:?}", event.kind, path);
 
-            let data = file_meta::new(&path)?;
-            println!("{:?}", data);
+            match file_meta::new(&path) {
+                Ok(data) => { 
+                    println!("{:?}", data);
+                    // call AI laywer with data
+                }
+                Err(e) => eprintln!("Metadata error: {:?}", e),
+            }
         }
     }
 }
