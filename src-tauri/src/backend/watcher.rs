@@ -35,25 +35,29 @@ fn run_watcher(downloads: &Path) {
 
         println!("Watcher started");
 
-        for res in rx {
-            match res {
-                Ok(event) => {
-                    for path in event.paths {
-                        let event_kind = event.kind;
-                        if is_file_done_downloading(&path, event_kind) {
-                            println!("File download detected: {:?}, {:?}", event.kind, path);
-                            let data = file_meta::new(&path)?;
-                            println!("{:?}", data);
-                        }
-                    }   
-                }
-                Err(e) => {
-                    println!("Watch error: {:?}", e);
-                }
+    for res in rx {
+        let event = match res {
+            Ok(e) => e,
+            Err(e) => {
+                eprintln!("Watch error: {:?}", e);
+                continue;
             }
+        };
+
+        for path in event.paths {
+            if !is_file_done_downloading(&path, event.kind) {
+                continue;
+            }
+
+            println!("File download detected: {:?}, {:?}", event.kind, path);
+
+            let data = file_meta::new(&path)?;
+            println!("{:?}", data);
         }
-            
+    }
 }
+            
+
 
 fn is_file_done_downloading(path: &Path, event_kind: EventKind) -> bool {
 
