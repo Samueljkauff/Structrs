@@ -1,5 +1,6 @@
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 pub mod backend;
+pub mod domain;
 
 use backend::watcher::start;
 
