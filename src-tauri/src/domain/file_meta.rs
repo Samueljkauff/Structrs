@@ -5,11 +5,11 @@ use chrono::Local;
 #[allow(dead_code)]
 #[derive(Debug)]
 pub struct FileMeta {
-    file_name: String,
-    extension: Option<String>,
-    mime: Option<String>,
-    size: u64,
-    timestamp: String,
+    pub file_name: String,
+    pub extension: Option<String>,
+    pub mime: Option<String>,
+    pub size: u64,
+    pub timestamp: String,
 }
 
 impl FileMeta {

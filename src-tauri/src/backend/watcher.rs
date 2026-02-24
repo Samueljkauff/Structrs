@@ -3,7 +3,8 @@ use std::{fs::{self}, path::{Path, PathBuf}, sync::mpsc::channel, thread, time::
 use notify::{Config, EventKind, RecommendedWatcher, RecursiveMode, Watcher, event::CreateKind};
 use tauri::{AppHandle, Manager};
 
-use crate::domain::file_meta::FileMeta;
+use crate::domain::{classification::Classifier, file_meta::FileMeta};
+use crate::domain::dummy_classifier::DummyClassifier;
 
 #[tauri::command]
 pub fn start(app: AppHandle) {
@@ -54,14 +55,16 @@ fn run_watcher(downloads: &Path) {
             match FileMeta::new(&path) {
                 Ok(data) => { 
                     println!("{:?}", data);
-                    // call AI laywer with data
+                    let classifier = DummyClassifier;
+                    let results = classifier.classify(&data);
+                    println!("{:?}", results);
                 }
                 Err(e) => eprintln!("Metadata error: {:?}", e),
             }
         }
     }
 }
-            
+
 fn is_file_done_downloading(path: &Path, event_kind: EventKind) -> bool {
 
     if !path.exists() {

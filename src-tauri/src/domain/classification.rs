@@ -11,5 +11,5 @@ pub struct ClassificationResult {
 }
 
 pub trait Classifier {
-    fn classify(meta: &FileMeta) -> Self;
+    fn classify(&self, meta: &FileMeta) -> ClassificationResult;
 }
