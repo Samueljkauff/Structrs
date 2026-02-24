@@ -3,7 +3,7 @@ use std::{fs::{self}, path::{Path, PathBuf}, sync::mpsc::channel, thread, time::
 use notify::{Config, EventKind, RecommendedWatcher, RecursiveMode, Watcher, event::CreateKind};
 use tauri::{AppHandle, Manager};
 
-use crate::backend::file_meta::FileMeta;
+use crate::domain::file_meta::FileMeta;
 
 #[tauri::command]
 pub fn start(app: AppHandle) {

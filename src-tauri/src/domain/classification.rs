@@ -1,5 +1,6 @@
 use std::path::PathBuf;
-use crate::backend::file_meta::FileMeta;
+
+use crate::domain::file_meta::FileMeta;
 
 #[derive(Debug, Clone)]
 pub struct ClassificationResult {

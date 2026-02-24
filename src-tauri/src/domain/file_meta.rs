@@ -2,6 +2,7 @@ use std::path::Path;
 use mime_guess::from_ext;
 use chrono::Local;
 
+#[allow(dead_code)]
 #[derive(Debug)]
 pub struct FileMeta {
     file_name: String,
