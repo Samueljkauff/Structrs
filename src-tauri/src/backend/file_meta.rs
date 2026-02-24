@@ -3,7 +3,7 @@ use mime_guess::from_ext;
 use chrono::Local;
 
 #[derive(Debug)]
-pub struct file_meta {
+pub struct FileMeta {
     file_name: String,
     extension: Option<String>,
     mime: Option<String>,
@@ -11,7 +11,7 @@ pub struct file_meta {
     timestamp: String,
 }
 
-impl file_meta {
+impl FileMeta {
     pub fn new(path: &Path) -> std::io::Result<Self> {
         let meta_data = std::fs::metadata(path)?;
         let file_name = path.file_name().unwrap_or_default().to_string_lossy().to_string();

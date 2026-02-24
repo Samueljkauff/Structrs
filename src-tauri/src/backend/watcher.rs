@@ -3,7 +3,7 @@ use std::{fs::{self}, path::{Path, PathBuf}, sync::mpsc::channel, thread, time::
 use notify::{Config, EventKind, RecommendedWatcher, RecursiveMode, Watcher, event::CreateKind};
 use tauri::{AppHandle, Manager};
 
-use crate::backend::file_meta::file_meta;
+use crate::backend::file_meta::FileMeta;
 
 #[tauri::command]
 pub fn start(app: AppHandle) {
@@ -51,7 +51,7 @@ fn run_watcher(downloads: &Path) {
 
             println!("File download detected: {:?}, {:?}", event.kind, path);
 
-            match file_meta::new(&path) {
+            match FileMeta::new(&path) {
                 Ok(data) => { 
                     println!("{:?}", data);
                     // call AI laywer with data
@@ -62,8 +62,6 @@ fn run_watcher(downloads: &Path) {
     }
 }
             
-
-
 fn is_file_done_downloading(path: &Path, event_kind: EventKind) -> bool {
 
     if !path.exists() {
