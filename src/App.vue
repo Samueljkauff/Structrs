@@ -8,7 +8,13 @@
 import FolderScene from './components/FolderScene.vue'
 import { invoke } from '@tauri-apps/api/core'
 
-invoke("start")
+invoke("start");
+
+const fileTree = ref(null);
+
+onMounted(async () => {
+  // fileTree.value = await invoke("load_file_tree");
+});
 </script>
 
 <style>
