@@ -5,8 +5,9 @@
 </template>
 
 <script setup>
-import FolderScene from './components/FolderScene.vue'
-import { invoke } from '@tauri-apps/api/core'
+import FolderScene from './components/FolderScene.vue';
+import { invoke } from '@tauri-apps/api/core';
+import { ref, onMounted } from "vue";
 
 invoke("start");
 
