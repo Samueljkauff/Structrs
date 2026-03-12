@@ -78,12 +78,18 @@ export default defineComponent({
   overflow: hidden;
   cursor: grab;
   background: #f8f8f8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .workspace {
   position: relative;
   width: 5000px;
   height: 5000px;
+  display: flex;
+  justify-content: center;
+  align-items:end;
 
   background-image:
     linear-gradient(to right, #e0e0e0 1px, transparent 1px),
@@ -98,10 +104,11 @@ export default defineComponent({
   background: white;
   border: 1px solid #ccc;
   border-radius: 6px;
-  display: flex;
+  display: flex;           /* flex to center text inside node */
   align-items: center;
   justify-content: center;
   font-weight: bold;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  margin: 0 10px;          /* spacing between nodes */
 }
 </style>
