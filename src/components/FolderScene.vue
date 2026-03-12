@@ -63,7 +63,7 @@ export default defineComponent({
       this.dragging = false;
     },
     onZoom(e: WheelEvent) {
-      const zoomFactor = 0.1;
+      const zoomFactor = 0.03;
       this.scale += e.deltaY < 0 ? zoomFactor : -zoomFactor;
       this.scale = Math.max(0.3, Math.min(3, this.scale));
     }
