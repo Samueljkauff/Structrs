@@ -1,7 +1,9 @@
 use walkdir::WalkDir;
+use crate::domain::folder_node::FolderNode;
+
 
 #[tauri::command]
-fn load_children(root: String) -> Vec<FileNode> {
+pub async fn load_children(root: String) -> Vec<FolderNode> {
     WalkDir::new(root).into_iter().filter_map(|e| e.ok());
 }
 

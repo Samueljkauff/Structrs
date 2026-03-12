@@ -1,3 +1,4 @@
+#[derive(Debug, Clone)]
 pub struct FolderNode {
     pub id: String,
     pub name: String,
