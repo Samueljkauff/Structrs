@@ -1,5 +1,4 @@
 use std::path::PathBuf;
-
 use super::file_meta::FileMeta;
 use super::classification::{ClassificationResult, Classifier};
 

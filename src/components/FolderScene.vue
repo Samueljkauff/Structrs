@@ -11,51 +11,53 @@
       class="workspace"
       :style="workspaceStyle"
     >
-      <div class="folder-node" :style="{ margin: auto }">
+      <div class="folder-node">
         Home
       </div>
     </div>
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed } from 'vue'
 
-const scale = ref(1)
-const offset = ref({ x: 0, y: 0 })
-const dragging = ref(false)
-const lastPos = ref({ x: 0, y: 0 })
+const scale = ref(1);
+const offset = ref({ x: 0, y: 0 });
+const dragging = ref(false);
+const lastPosition = ref({ x: 0, y: 0 });
 
 const workspaceStyle = computed(() => ({
   transform: `
     translate(${offset.value.x}px, ${offset.value.y}px)
     scale(${scale.value})
   `,
-  transformOrigin: '0 0'
+  transformOrigin: `0 0`
 }))
 
-function startDrag(e) {
-  dragging.value = true
-  lastPos.value = { x: e.clientX, y: e.clientY }
+function startDrag(e: MouseEvent) {
+  dragging.value = true;
+  lastPosition.value = { x: e.clientX, y: e.clientY };
 }
 
-function onDrag(e) {
-  if (!dragging.value) return
+function onDrag(e: MouseEvent) {
+  if (!dragging.value) {
+    return;
+  }
 
-  offset.value.x += e.clientX - lastPos.value.x
-  offset.value.y += e.clientY - lastPos.value.y
+  offset.value.x += e.clientX - lastPosition.value.x;
+  offset.value.y += e.clientY - lastPosition.value.y;
 
-  lastPos.value = { x: e.clientX, y: e.clientY }
+  lastPosition.value = { x: e.clientX, y: e.clientY };
 }
 
 function stopDrag() {
-  dragging.value = false
+  dragging.value = false;
 }
 
-function onZoom(e) {
-  const zoomFactor = 0.1
-  scale.value += e.deltaY < 0 ? zoomFactor : -zoomFactor
-  scale.value = Math.max(0.3, Math.min(3, scale.value))
+function onZoom(e: WheelEvent) {
+  const zoomFactor = 0.1;
+  scale.value += e.deltaY < 0 ? zoomFactor : -zoomFactor;
+  scale.value = Math.max(0.3, Math.min(3, scale.value));
 }
 </script>
 
