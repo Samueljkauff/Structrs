@@ -2,18 +2,13 @@
 pub mod backend;
 pub mod domain;
 
-use backend::watcher::start;
-
-#[tauri::command]
-fn greet(name: &str) -> String {
-    format!("Hello, {0}! Here's your file directory: {1}", name, "files")
-}
+use backend::{ watcher::start, folder_tree::load_children };
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
-        .invoke_handler(tauri::generate_handler![greet, start, load_children])
+        .invoke_handler(tauri::generate_handler![start, load_children])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

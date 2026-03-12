@@ -1,20 +1,23 @@
 <template>
   <div id="app">
-    <FolderScene />
+    <FolderScene :nodes="nodes" />
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import FolderScene from './components/FolderScene.vue';
 import { invoke } from '@tauri-apps/api/core';
+import { homeDir } from '@tauri-apps/api/path';
 import { ref, onMounted } from "vue";
+import { FolderNode } from "./interfaces/FolderNode"
 
 invoke("start");
 
-const fileTree = ref(null);
+const nodes = ref<FolderNode[]>([]);
 
 onMounted(async () => {
-  // fileTree.value = await invoke("load_file_tree");
+  const rootPath = await homeDir();
+  nodes.value = await invoke<FolderNode[]>("load_children", { root: rootPath});
 });
 </script>
 

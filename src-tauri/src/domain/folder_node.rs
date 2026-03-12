@@ -1,6 +1,7 @@
-#[derive(Debug, Clone)]
+use serde::{Serialize, Deserialize};
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct FolderNode {
-    pub id: String,
     pub name: String,
     pub path: String,
     pub is_directory: bool,

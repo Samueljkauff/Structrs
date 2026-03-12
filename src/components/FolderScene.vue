@@ -11,54 +11,64 @@
       class="workspace"
       :style="workspaceStyle"
     >
-      <div class="folder-node">
-        Home
+      <div v-for="node in nodes" class="folder-node">
+        {{ node.name }}
       </div>
     </div>
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref, computed } from 'vue'
+<script lang="ts">
+import { defineComponent } from 'vue';
+import { FolderNode } from '../interfaces/FolderNode';
 
-const scale = ref(1);
-const offset = ref({ x: 0, y: 0 });
-const dragging = ref(false);
-const lastPosition = ref({ x: 0, y: 0 });
+export default defineComponent({
+  name: 'FolderScene',
+  data() {
+    return {
+      scale: 1,
+      offset: { x: 0, y: 0 },
+      dragging: false,
+      lastPosition: { x: 0, y: 0 }
+    };
+  },
+  props: {
+      nodes: {
+      type: Array as () => FolderNode[],
+      required: true
+    }
+  },
+  computed: {
+    workspaceStyle(): Record<string, string> {
+      return {
+        transform: `translate(${this.offset.x}px, ${this.offset.y}px) scale(${this.scale})`,
+        transformOrigin: '0 0'
+      };
+    }
+  },
+  methods: {
+    startDrag(e: MouseEvent) {
+      this.dragging = true;
+      this.lastPosition = { x: e.clientX, y: e.clientY };
+    },
+    onDrag(e: MouseEvent) {
+      if (!this.dragging) return;
 
-const workspaceStyle = computed(() => ({
-  transform: `
-    translate(${offset.value.x}px, ${offset.value.y}px)
-    scale(${scale.value})
-  `,
-  transformOrigin: `0 0`
-}))
+      this.offset.x += e.clientX - this.lastPosition.x;
+      this.offset.y += e.clientY - this.lastPosition.y;
 
-function startDrag(e: MouseEvent) {
-  dragging.value = true;
-  lastPosition.value = { x: e.clientX, y: e.clientY };
-}
-
-function onDrag(e: MouseEvent) {
-  if (!dragging.value) {
-    return;
+      this.lastPosition = { x: e.clientX, y: e.clientY };
+    },
+    stopDrag() {
+      this.dragging = false;
+    },
+    onZoom(e: WheelEvent) {
+      const zoomFactor = 0.1;
+      this.scale += e.deltaY < 0 ? zoomFactor : -zoomFactor;
+      this.scale = Math.max(0.3, Math.min(3, this.scale));
+    }
   }
-
-  offset.value.x += e.clientX - lastPosition.value.x;
-  offset.value.y += e.clientY - lastPosition.value.y;
-
-  lastPosition.value = { x: e.clientX, y: e.clientY };
-}
-
-function stopDrag() {
-  dragging.value = false;
-}
-
-function onZoom(e: WheelEvent) {
-  const zoomFactor = 0.1;
-  scale.value += e.deltaY < 0 ? zoomFactor : -zoomFactor;
-  scale.value = Math.max(0.3, Math.min(3, scale.value));
-}
+});
 </script>
 
 <style scoped>
