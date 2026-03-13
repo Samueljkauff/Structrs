@@ -26,7 +26,7 @@ pub fn load_children(root: String) -> Vec<FolderNode> {
             });
         }
     }
-
+    println!("Successfully loaded Home directory Children!");
     nodes
 }
 

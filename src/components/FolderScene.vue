@@ -11,8 +11,10 @@
       class="workspace"
       :style="workspaceStyle"
     >
-      <div v-for="node in nodes" class="folder-node">
-        {{ node.name }}
+      <div class="nodes-container">
+        <div v-for="node in nodes" class="folder-node">
+          {{ node.name }}
+        </div>
       </div>
     </div>
   </div>
@@ -63,7 +65,7 @@ export default defineComponent({
       this.dragging = false;
     },
     onZoom(e: WheelEvent) {
-      const zoomFactor = 0.03;
+      const zoomFactor = 0.02;
       this.scale += e.deltaY < 0 ? zoomFactor : -zoomFactor;
       this.scale = Math.max(0.3, Math.min(3, this.scale));
     }
@@ -101,14 +103,23 @@ export default defineComponent({
 .folder-node {
   width: 120px;
   height: 80px;
-  background: white;
+  background: #8ad0ff;
   border: 1px solid #ccc;
   border-radius: 6px;
-  display: flex;           /* flex to center text inside node */
+  display: flex;
   align-items: center;
   justify-content: center;
   font-weight: bold;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  margin: 0 10px;          /* spacing between nodes */
+  margin: 0 5px;
+}
+
+.nodes-container {
+  border: 1px solid gray;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  display: flex;
+  padding: 10px;
+  background: white;
 }
 </style>
